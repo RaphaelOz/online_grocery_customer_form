@@ -3,6 +3,11 @@ from datetime import datetime
 from store_database import article_list
 from store_database import article_name_list
 
+# Personal comment: Should I do a list of dictionaries instead of 
+# 2 lists of order_item_list and order_quantity_list?
+
+# The dictionaries would have article_name and quantity as keys.
+
 
 class CustomerForm():
 
