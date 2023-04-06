@@ -5,8 +5,14 @@ from store_database import article_name_list
 
 
 class CustomerForm():
-    # def __init__(self):
-    #     pass
+
+    def order_validation(self):
+        self.customer_number_validation()
+        self.delivery_date_validation()
+
+        while not hasattr(self, "break_loop"):
+            self.article_validation()
+            self.quantity_validation()
 
     ## Check validity of customer_number
     def customer_number_validation(self):
@@ -41,54 +47,95 @@ class CustomerForm():
         input_date = input_date.date()
         self.delivery_date = input_date
 
-    def order_validation(self):
-        self.order_item_list = []
-        self.order_quantity_list = []
 
-        # self.article_validation_step1()
-        self.quantity_validation_step1()
 
-    ## To be used inside order_validation() or make sure to initilise self.order_item_list = []
-    def article_validation_step1(self):
+
+
+    def article_validation(self):
+
+        ## Create an empty list for self.order_item_list if the attribute does not exist for the first loop
+        if not hasattr(self, "order_item_list"):
+            self.order_item_list = []
+        else:
+            pass
+
         order_item_list = self.order_item_list
         
-        while True:
-            error_message = "ERROR: PLEASE TYPE A VALID ARTICLE FROM THE LIST BELOW."
+        ## If this is the first item
+        if order_item_list == []:
+            while True:
+                error_message = "ERROR: PLEASE TYPE A VALID ARTICLE FROM THE LIST BELOW."
 
-            print(article_name_list)
-            input_article = input("Select the item you wish to order from the list above: ")
-            print()
-
-            if input_article not in article_name_list:
+                print(article_name_list)
+                input_article = input("Select the item you wish to order from the list above: ")
                 print()
-                print(error_message)
-            else:
-                order_item_list.append(input_article)
-                self.order_item_list = order_item_list
-                break
-    
-    ## To be used inside order_validation() or make sure to initilise self.order_quantity_list = []
-    def quantity_validation_step1(self):
-        order_quantity_list = self.order_quantity_list
 
-        while True:
-            error_message1 = "Please enter an integer between 1 and 10"
-            error_message2 = "For bulk orders with more than 10 items, please call our office at +614-0000-0000"
-            input_quantity = input("How many of the good selected previously do you want?")
-
-            try:
-                input_quantity = int(input_quantity)
-                if input_quantity > 10:
-                    print(error_message2)
+                if input_article not in article_name_list:
+                    print()
+                    print(error_message)
                 else:
+                    order_item_list.append(input_article)
+                    self.order_item_list = order_item_list
                     break
 
-            except ValueError:
-                print(error_message1)
-        
-        input_quantity = int(input_quantity)
-        order_quantity_list.append(input_quantity)
-        self.order_quantity_list = order_quantity_list
+        ## If it already has items, add more items to the list
+        else:
+            while True:
+                error_message = "ERROR: PLEASE TYPE A VALID ARTICLE FROM THE LIST BELOW."
+                
+                print(f"\n Do you want to order another item? \n {article_name_list}")
+                input_article = input("If yes, please type a valid article from the list above \nOnce you are finish, please type 'done': ")
+
+                if input_article not in article_name_list and input_article != "done":
+                    print()
+                    print(error_message)
+                
+                elif input_article in article_name_list:
+                    order_item_list.append(input_article)
+                    self.order_item_list = order_item_list
+                    break     
+
+                elif input_article == "done":
+                    self.break_loop = "done"
+                    break
+
+    
+    ## Accept the number of the item for a previously chosen article.
+    def quantity_validation(self):
+
+        ## Create an empty list for self.order_quantity_list if the attribute does not exist for the first loop
+        if not hasattr(self, "order_quantity_list"):
+            self.order_quantity_list = []
+        else:
+            pass
+
+        order_quantity_list = self.order_quantity_list
+
+        ## Stop the function if the attribute break_loop was created.
+        if hasattr(self, "break_loop"):
+            pass
+
+        ## Accept the customer input as the quantity of items required.
+        else:
+            while True:
+                error_message1 = "Please enter an integer between 1 and 10"         ## Name of variable can be improved
+                error_message2 = "For bulk orders with more than 10 items, please call our office at +614-0000-0000"        ## Name of variable can be improved
+                input_quantity = input("How many of the good selected previously do you want?")
+
+                try:
+                    input_quantity = int(input_quantity)
+                    if input_quantity > 10:
+                        print(error_message1)
+                        print(error_message2)
+                    else:
+                        break
+
+                except ValueError:
+                    print(error_message1)
+            
+            input_quantity = int(input_quantity)
+            order_quantity_list.append(input_quantity)
+            self.order_quantity_list = order_quantity_list
 
 
 
