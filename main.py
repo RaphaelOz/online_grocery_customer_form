@@ -1,8 +1,9 @@
 from store_database import Store
-from store_database import CustomerForm
+from customer import CustomerForm
+
+store1 = Store("store database")
+store2 = Store("store database 2")
 
 
-a = CustomerForm()
-a.create_list("store database")
-a.display_name()
-a.get_whole_customer_order()### Merci Nico pour l'aide
+a = CustomerForm(store1)
+a.get_whole_customer_order()
